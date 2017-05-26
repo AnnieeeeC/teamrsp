@@ -1,7 +1,15 @@
+library(shinythemes)
 library(shiny)
+library(plotly)
+library(maps)
+library(markdown)
 
 shinyServer(function(input, output) {
   
-  output$text <- renderText({paste0("You are viewing tab \"", input$tabs, "\"")})
+  output$map <- renderPlot( {
+    
+    map("state")
+    
+  } )
   
 })
