@@ -11,7 +11,7 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
                             sidebarLayout(
                               
                               sidebarPanel(
-                               # selectInput()
+                                # selectInput()
                               ),
                               
                               mainPanel(
@@ -21,23 +21,25 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
                             )
                             
                             
-                            ),
+                   ),
                    
                    tabPanel(title = "Map",
                             
                             sidebarLayout(
                               
                               sidebarPanel(
-                                # selectInput()
+                                selectInput(inputId = "location",
+                                            label = "Choose the variable you want to see:",
+                                            choices = c("Airport Location", "Dates"),
+                                            selected = "Airport Location")
                               ),
                               
                               mainPanel(
                                 plotOutput("map")
-                                #includeMarkdown(),
                               )
                             )
                             
-                            ),
+                   ),
                    
                    tabPanel(title = "Component 3")
 ))
