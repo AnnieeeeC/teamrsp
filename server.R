@@ -5,7 +5,6 @@ library(leaflet)
 library(maps)
 library(dplyr)
 library(markdown)
-setwd("~/Desktop/teamrsp")
 
 shinyServer(function(input, output) {
   airport <- read.csv("./data/airports.csv", stringsAsFactors = FALSE)
