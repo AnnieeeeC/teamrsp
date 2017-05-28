@@ -50,5 +50,5 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
                             mainPanel(
                               plotlyOutput("scatter")
                             )
-                            )
+                    )
 ))
