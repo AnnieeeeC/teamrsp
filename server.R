@@ -18,6 +18,7 @@ shinyServer(function(input, output) {
     
     #creates a scatter plot that can be filtered based on date
     output$scatter <- renderPlotly({
+      #add leading zeroes to month and day to make the length of the numbers the same and create the date column
       flights$MONTH <- sprintf("%02d", flights$MONTH)
       flights$DAY <- sprintf("%02d", flights$DAY)
       flights$date <- as.Date(paste0("2015-", flights$MONTH, "-", flights$DAY))
