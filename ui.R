@@ -8,17 +8,7 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
                             
                             titlePanel('Information Summary'),
                             
-                            sidebarLayout(
-                              
-                              sidebarPanel(
-                                # selectInput()
-                              ),
-                              
-                              mainPanel(
-                                #plotOutput(),
-                                #includeMarkdown(),
-                              )
-                            )
+                            includeMarkdown("./texts/Home.md")
                             
                             
                    ),
@@ -42,13 +32,17 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
                    ),
                    
                    tabPanel(title = "Report",
+                            
                             titlePanel("Find Delayed Time Based on Dates"),
+                            
                             sidebarPanel(
                               dateRangeInput("daterange", label = h3("Date Range"), min = "2015-01-01", max = "2015-12-31",
                                              start = "2015-01-01", end = "2015-12-31")
                             ),
+                            
                             mainPanel(
-                              plotlyOutput("scatter")
+                              plotlyOutput("scatter"),
+                              includeMarkdown("./texts/DateScatterPlotDescription.md")
                             )
                     )
 ))
