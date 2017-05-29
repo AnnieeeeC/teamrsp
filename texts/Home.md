@@ -15,6 +15,9 @@ The original dataset provided by the US Department of Transportation is too larg
 ### Project Creators
 
 Jessie Kim
+
 Justin Han
+
 Gloria Ren
+
 Annie Chang
