@@ -3,7 +3,10 @@ library(shiny)
 library(plotly)
 library(markdown)
 
-shinyUI(navbarPage("2015 Flight Delays and Cancellations", theme = "United.css",
+shinyUI(navbarPage("2015 Flight Delays and Cancellations", 
+                   
+                   theme = shinythemes::shinytheme("united"),
+                   
                    tabPanel(title = "Home",
                             
                             titlePanel('Information Summary'),
