@@ -36,7 +36,7 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                    
                    tabPanel(title = "Report",
                             
-                            titlePanel("Find Delayed Time Based on Dates"),
+                            titlePanel("Find Delayed Time of Flights Based on Dates"),
                             
                             sidebarPanel(
                               dateRangeInput("daterange", label = h3("Date Range"), min = "2015-01-01", max = "2015-12-31",
