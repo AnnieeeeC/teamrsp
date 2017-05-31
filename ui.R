@@ -23,12 +23,12 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                               sidebarPanel(
                                 selectInput(inputId = "location",
                                             label = "Choose the variable you want to see:",
-                                            choices = c("Airport Location", "Dates"),
+                                            choices = c("Airport Location", "Flights", "Airlines"),
                                             selected = "Airport Location")
                               ),
                               
                               mainPanel(
-                                plotOutput("map")
+                                plotlyOutput("map")
                               )
                             )
                             
