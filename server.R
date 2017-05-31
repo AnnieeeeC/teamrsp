@@ -9,7 +9,7 @@ shinyServer(function(input, output) {
   #read data files
   airport <- read.csv("./data/airports.csv", stringsAsFactors = FALSE)
   airlines <- read.csv("./data/airlines.csv", stringsAsFactors = FALSE)
-  flights <- read.csv("./data/flights.csv", stringsAsFactors = FALSE)
+  flights <- read.csv("./data/flights.csv")
   
   #filter out the numbers in the airport columns
   flights <- flights[!(grepl("[[:digit:]]", flights$ORIGIN_AIRPORT) == TRUE), ]
@@ -105,6 +105,83 @@ shinyServer(function(input, output) {
                                    "<br>Date: ", date)) %>% 
         layout(title = "Delayed Time of Flights in 2015", xaxis = list(title = "Origin Airport"),
                yaxis = list(title = "Departure Delayed Time (mins)"), margin = m)
+    })
+    
+    output$bar <- renderPlot({
+      
+      # creates df for airlines
+      avg.airline.data <- group_by(flights, AIRLINE) %>%
+        na.omit() %>%
+        summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY),0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
+      
+      #creates df for origin airports
+      avg.origin.airport.data <- group_by(flights, ORIGIN_AIRPORT) %>%
+        na.omit() %>% 
+        summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY),0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
+      
+      # creates df for destination airports
+      avg.destination.airport.data <- group_by(flights, DESTINATION_AIRPORT) %>%
+        na.omit() %>%
+        summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY), 0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
+      
+      #changes df depending on input$ydata
+      df <- reactive({
+        if(input$ydata == "Departure Delay") {
+          switch(input$xdata,
+                 "Airlines" = avg.airline.data,
+                 "Airports" = avg.origin.airport.data)
+          
+        } else {
+          switch(input$xdata,
+                 "Airlines" = avg.airline.data,
+                 "Airports" = avg.destination.airport.data)
+        }
+      })
+      
+      # saves df into a new.data.frame variable. 
+      new.data.frame <- df()
+      
+      #changes what data to use for the yaxis depending on input$ydata
+      y.data <- reactive({
+        switch(input$ydata,
+               "Departure Delay" = new.data.frame$MEAN_DEPARTURE_DELAY,
+               "Arrival Delay" = new.data.frame$MEAN_ARRIVAL_DELAY)
+      })
+      
+      #changes what data to use for the xaxis dpending on input$ydata and input$xdata
+      x.data <- reactive({
+        if(input$ydata == "Departure Delay"){
+          switch(input$xdata,
+                 "Airlines" = new.data.frame$AIRLINE,
+                 "Airports" = new.data.frame$ORIGIN_AIRPORT)
+        } else {
+          switch(input$xdata,
+                 "Airlines" = new.data.frame$AIRLINE,
+                 "Airports" = new.data.frame$DESTINATION_AIRPORT)
+        }
+      })
+      
+      # changes how the graph is sorted out depending on input$sort
+      x.order <- reactive({
+        switch(input$sort,
+               "Alphabetically" = x.data(),
+               "High to Low" = reorder(x.data(), -y.data()),
+               "Low to High" = reorder(x.data(), y.data())
+        )
+      })
+      
+      #creates the actual bargraph depnding on the different inputs. 
+      ggplot(new.data.frame, aes_string(x = x.order(), y = y.data(), width = 0.65, fill = x.data())) +
+        labs(x = input$xdata, y = input$ydata) +
+        #bunch of modificatiions for the graph
+        geom_col()+ theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 12), axis.title.x = element_text(hjust = 0.5), 
+                          plot.title = element_text(size = 20)) +
+        #creates title base on input$ydata and input$xdata
+        ggtitle(paste("Average", input$ydata, "for", input$xdata)) +
+        #moves the y axis data
+        geom_text(aes(label = y.data()), nudge_y = 5) +
+        # creates legend
+        scale_fill_discrete(name = paste("Names for", input$xdata),label = x.data()) 
     })
     
     #creates a pie chart that finds the maximum departure or arrival delay per month
