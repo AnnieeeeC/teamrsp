@@ -103,4 +103,31 @@ shinyServer(function(input, output) {
         layout(title = "Delayed Time of Flights in 2015", xaxis = list(title = "Origin Airport"),
                yaxis = list(title = "Departure Delayed Time (mins)"), margin = m)
     })
+    
+    #creates a pie chart that finds the maximum departure or arrival delay per month
+    output$pie <- renderPlotly({
+      dataset <- reactive({
+        if(input$var == "DEPARTURE_DELAY") {
+          flights %>%
+            group_by(MONTH) %>%
+            slice(which.max(DEPARTURE_DELAY)) %>%
+            mutate(max = DEPARTURE_DELAY)
+        } else {
+          flights %>%
+            group_by(MONTH) %>% 
+            slice(which.max(ARRIVAL_DELAY)) %>%
+            mutate(max = ARRIVAL_DELAY)
+        }
+      })
+      
+      pie <- plot_ly(dataset(), labels = ~MONTH, values = ~max, type = 'pie',
+                     textposition = 'inside',
+                     textinfo = 'label+percent',
+                     insidetextfont = list(color = '#FFFFFF '),
+                     hoverinfo = 'text',
+                     text = ~paste0('Delayed Time: ', max, 'mins <br>Month: ', MONTH, '<br>Airline: ',
+                                    AIRLINE, '<br>Origin Airport: ', ORIGIN_AIRPORT,
+                                    '<br> Departure Airport: ', DESTINATION_AIRPORT)) %>%
+        layout(title = 'Latest Flight Per Month')
+    })
 })
