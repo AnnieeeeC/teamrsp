@@ -48,6 +48,8 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                               includeMarkdown("./texts/DateScatterPlotDescription.md")
                             ),
                             
+                            br(),
+                            
                             titlePanel("Find Maximum Delayed Time Per Month"),
                             
                             sidebarPanel(
