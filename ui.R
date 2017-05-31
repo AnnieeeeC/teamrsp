@@ -40,7 +40,8 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                               fluidRow(
                                 column(12,
                                        mainPanel(
-                                         plotOutput('bar')
+                                         plotOutput('bar'),
+                                         includeMarkdown("./texts/bargraphsum.md")
                                        )
                                 )
                               ),
