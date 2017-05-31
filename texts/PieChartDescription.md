@@ -1,0 +1,1 @@
+This pie chart can be used to figure out the maximum departure delay or arrival delay for each month. The chart also has hover information for details worth exploring. This will allow users to plan for a more appropriate month to travel, avoid long time of waiting at the airport and have a sense of which airlines were not punctual.

@@ -58,7 +58,10 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                             ),
                             
                             mainPanel(
-                              plotlyOutput("pie")
+                              plotlyOutput("pie"),
+                              includeMarkdown("./texts/PieChartDescription.md"),
+                              br(),
+                              br()
                             )
                     )
 ))
