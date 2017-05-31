@@ -11,6 +11,9 @@ shinyServer(function(input, output) {
   airlines <- read.csv("./data/airlines.csv", stringsAsFactors = FALSE)
   flights <- read.csv("./data/flights.csv", stringsAsFactors = FALSE)
   
+  #filter out the numbers in the airport columns
+  flights <- flights[!(grepl("[[:digit:]]", flights$ORIGIN_AIRPORT) == TRUE), ]
+  
     output$map <- renderPlot( {
       map("state", regions= ".", mar = c(.5,.5,.5,.5), namefield = )
       points(x = airport$LONGITUDE, y = airport$LATITUDE, col = "red")
