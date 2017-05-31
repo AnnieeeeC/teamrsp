@@ -6,12 +6,14 @@ library(dplyr)
 library(markdown)
 
 shinyServer(function(input, output) {
+  #read data files
   airport <- read.csv("./data/airports.csv", stringsAsFactors = FALSE)
   airlines <- read.csv("./data/airlines.csv", stringsAsFactors = FALSE)
   flights <- read.csv("./data/flights.csv", stringsAsFactors = FALSE)
   
   output$map <- renderPlotly( {
     
+    #filter data with necessary info for maps
     airport.mod1 <- select(flights, ORIGIN_AIRPORT, YEAR, MONTH, DAY, AIRLINE, FLIGHT_NUMBER)
     colnames(airport.mod1)[1] <- "IATA_CODE"
     airport.mod2 <- select(flights, DESTINATION_AIRPORT, YEAR, MONTH, DAY, AIRLINE, FLIGHT_NUMBER)
@@ -23,6 +25,7 @@ shinyServer(function(input, output) {
     total <- merge(filtered.airport, filtered.airport2, by="row.names", all.x=TRUE)
     total <-na.omit(total)
     
+    #set background of maps
     geo <- list(
       scope = 'north america',
       projection = list(type = 'azimuthal equal area'),
@@ -31,6 +34,7 @@ shinyServer(function(input, output) {
       countrycolor = toRGB("gray80")
     )
     
+    #create maps depend on inputID
     if(input$location == "Airport Location") {
       p <- plot_geo(airport, locationmode = 'USA-states') %>%
         add_markers(
