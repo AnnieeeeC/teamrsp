@@ -45,10 +45,10 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                             
                             mainPanel(
                               plotlyOutput("scatter"),
-                              includeMarkdown("./texts/DateScatterPlotDescription.md")
+                              includeMarkdown("./texts/DateScatterPlotDescription.md"),
+                              br(),
+                              br()
                             ),
-                            
-                            br(),
                             
                             titlePanel("Find Maximum Delayed Time Per Month"),
                             
