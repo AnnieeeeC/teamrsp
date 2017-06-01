@@ -14,8 +14,8 @@ shinyServer(function(input, output) {
   #filter out the numbers in the airport columns
   flights <- flights[!(grepl("[[:digit:]]", flights$ORIGIN_AIRPORT) == TRUE), ]
   
+  #creates an interactive map
   output$map <- renderPlotly( {
-    
     #filter data with necessary info for maps
     airport.mod1 <- select(flights, ORIGIN_AIRPORT, YEAR, MONTH, DAY, AIRLINE, FLIGHT_NUMBER)
     colnames(airport.mod1)[1] <- "IATA_CODE"
@@ -30,23 +30,23 @@ shinyServer(function(input, output) {
     
     #set background of maps
     geo <- list(
-      scope = 'north america',
-      projection = list(type = 'azimuthal equal area'),
+      scope = "north america",
+      projection = list(type = "azimuthal equal area"),
       showland = TRUE,
       landcolor = toRGB("gray95"),
       countrycolor = toRGB("gray80")
     )
     
-    #create maps depend on inputID
+    #creates a map that depends on inputID
     if(input$location == "Airport Location") {
-      p <- plot_geo(airport, locationmode = 'USA-states') %>%
+      p <- plot_geo(airport, locationmode = "USA-states") %>%
         add_markers(
           data = airport, x = ~LONGITUDE, y = ~LATITUDE, hoverinfo = "text",
           text = ~paste0("Airport: ", airport$AIRPORT, "<br>IATA_CODE: ", airport$IATA_CODE, "<br>City: ", airport$CITY, 
                          "<br>State: ", airport$STATE)
         ) %>% 
         layout(
-          title = '2015 Airport Locations <br>(Hover for airport infomation)',
+          title = "2015 Airport Locations <br>(Hover for airport infomation)",
           geo = geo
         )
       } else if(input$location == "Flights") {
@@ -63,7 +63,7 @@ shinyServer(function(input, output) {
                          total$AIRPORT.y, ", ", total$CITY.y, "<br>Date: ", total$MONTH.x, "/", total$DAY.x, "/", total$YEAR.x)
         ) %>%
         layout(
-          title = '2015 Flights <br>(Hover for flight details)',
+          title = "2015 Flights <br>(Hover for flight details)",
           geo = geo
         )
       } else if(input$location == "Airlines") {
@@ -78,7 +78,7 @@ shinyServer(function(input, output) {
           alpha = 0.3, size = I(1), hoverinfo = "text", text = ~paste0("Airline: ", total$AIRLINE.x), color= ~total$AIRLINE.x
         ) %>%
         layout(
-          title = '2015 Flight Airlines <br>(Hover for airlines, <br>Double click legend for individual airline flights',
+          title = "2015 Flight Airlines <br>(Hover for airlines, <br>Double click legend for individual airline flights)",
           geo = geo
         )
       }
@@ -96,6 +96,7 @@ shinyServer(function(input, output) {
         return (df)
       })
       
+      #margins
       m <- list(l = 100, r = 40, b = 100, t = 50, pad = 0)
       
       scatter <- plot_ly(dataset(), type = "scatter", mode = "markers") %>% 
@@ -107,9 +108,9 @@ shinyServer(function(input, output) {
                yaxis = list(title = "Departure Delayed Time (mins)"), margin = m)
     })
     
+    #creates an interactive bar graph
     output$bar <- renderPlot({
-      
-      # creates df for airlines
+      #creates df for airlines
       avg.airline.data <- group_by(flights, AIRLINE) %>%
         na.omit() %>%
         summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY),0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
@@ -119,7 +120,7 @@ shinyServer(function(input, output) {
         na.omit() %>% 
         summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY),0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
       
-      # creates df for destination airports
+      #creates df for destination airports
       avg.destination.airport.data <- group_by(flights, DESTINATION_AIRPORT) %>%
         na.omit() %>%
         summarise( MEAN_DEPARTURE_DELAY = round(mean(DEPARTURE_DELAY), 0), MEAN_ARRIVAL_DELAY = round(mean(ARRIVAL_DELAY),0))
@@ -180,7 +181,7 @@ shinyServer(function(input, output) {
         ggtitle(paste("Average", input$ydata, "for", input$xdata)) +
         #moves the y axis data
         geom_text(aes(label = y.data()), nudge_y = 5) +
-        # creates legend
+        #creates legend
         scale_fill_discrete(name = paste("Names for", input$xdata),label = x.data()) 
     })
     
@@ -200,14 +201,13 @@ shinyServer(function(input, output) {
         }
       })
       
-      pie <- plot_ly(dataset(), labels = ~MONTH, values = ~max, type = 'pie',
-                     textposition = 'inside',
-                     textinfo = 'label+percent',
-                     insidetextfont = list(color = '#FFFFFF '),
-                     hoverinfo = 'text',
-                     text = ~paste0('Delayed Time: ', max, 'mins <br>Month: ', MONTH, '<br>Airline: ',
-                                    AIRLINE, '<br>Origin Airport: ', ORIGIN_AIRPORT,
-                                    '<br> Departure Airport: ', DESTINATION_AIRPORT)) %>%
-        layout(title = 'Latest Flight Per Month')
+      pie <- plot_ly(dataset(), labels = ~month.name[MONTH], values = ~max, type = 'pie',
+                     textposition = "inside",
+                     textinfo = "label+percent",
+                     hoverinfo = "text",
+                     text = ~paste0("Delayed Time: ", max, " mins <br>Month: ", ~month.name[MONTH], "<br>Airline: ",
+                                    AIRLINE, "<br>Origin Airport: ", ORIGIN_AIRPORT,
+                                    "<br> Departure Airport: ", DESTINATION_AIRPORT)) %>%
+        layout(title = "Latest Flight Per Month")
     })
 })
