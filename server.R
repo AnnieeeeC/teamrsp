@@ -201,7 +201,7 @@ shinyServer(function(input, output) {
         }
       })
       
-      pie <- plot_ly(dataset(), labels = ~month.name[MONTH], values = ~max, type = 'pie',
+      pie <- plot_ly(dataset(), labels = ~month.abb[MONTH], values = ~max, type = 'pie',
                      textposition = "inside",
                      textinfo = "label+percent",
                      hoverinfo = "text",
