@@ -205,7 +205,7 @@ shinyServer(function(input, output) {
                      textposition = "inside",
                      textinfo = "label+percent",
                      hoverinfo = "text",
-                     text = ~paste0("Delayed Time: ", max, " mins <br>Month: ", ~month.name[MONTH], "<br>Airline: ",
+                     text = ~paste0("Delayed Time: ", max, " mins <br>Month: ", month.name[MONTH], "<br>Airline: ",
                                     AIRLINE, "<br>Origin Airport: ", ORIGIN_AIRPORT,
                                     "<br> Departure Airport: ", DESTINATION_AIRPORT)) %>%
         layout(title = "Latest Flight Per Month")
