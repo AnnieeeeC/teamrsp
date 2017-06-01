@@ -172,7 +172,7 @@ shinyServer(function(input, output) {
       })
       
       #creates the actual bargraph depnding on the different inputs. 
-      ggplot(new.data.frame, aes_string(x = x.order(), y = y.data(), width = 0.65, fill = x.data())) +
+      ggplot(new.data.frame, aes_string(x = x.order(), y = y.data(), width = 0.55, fill = x.data())) +
         labs(x = input$xdata, y = input$ydata) +
         #bunch of modificatiions for the graph
         geom_col()+ theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 12), axis.title.x = element_text(hjust = 0.5), 
