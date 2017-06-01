@@ -67,19 +67,25 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                             
                             titlePanel("Average Departure and Arrival Delay Time of Airports and Airlines"),
 
-                            #Creates the side bar panels. 
-                            sidebarPanel(
+                            sidebarLayout(
+                              fluidRow(
+                                column(12,
+                                       mainPanel(
+                                         plotOutput('bar'),
+                                         includeMarkdown("./texts/bargraphsum.md")
+                                       )
+                                )
+                              ),
+                              
+                              #Creates the side bar panels. 
+                              sidebarPanel(
                                 selectInput("ydata", "Departure or Arrival Delay",
                                             choices = c("Departure Delay", "Arrival Delay")),
                                 selectInput("xdata", "Airlines or Airports",
                                             choices = list("Airlines", "Airports")),
                                 selectInput("sort", "Sort Data",
                                             choices = c("Alphabetically", "High to Low", "Low to High"))
-                            ),
-                            
-                            mainPanel(
-                                plotOutput('bar'),
-                                includeMarkdown("./texts/bargraphsum.md")
+                              )
                             )
                    )         
 ))
