@@ -1,0 +1,1 @@
+This interactive graph visualizes flights within the United States, and details can be found when hover over the points. The map can be filtered based on airport location, flights and airlines to make the users more easier to find the information they seek.

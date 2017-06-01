@@ -28,7 +28,8 @@ shinyUI(navbarPage("2015 Flight Delays and Cancellations",
                               ),
                               
                               mainPanel(
-                                plotlyOutput("map")
+                                plotlyOutput("map"),
+                                includeMarkdown("./texts/MapDescription.md")
                               )
                             )
                             
